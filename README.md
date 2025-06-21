@@ -1,13 +1,3 @@
-# Sample Hardhat Project
+# Projeto ProtoCoin
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+Este projeto demonstra uma aplicação web3 que permite a criação de um token no padrão ERC-20, assim como uma interface para envio de moedas através de um Faucet.
