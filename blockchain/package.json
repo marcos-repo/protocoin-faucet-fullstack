@@ -1,0 +1,25 @@
+{
+  "name": "protocoin-erc20-hardhat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx hardhat node",
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy:dev": "npx hardhat ignition deploy ignition/modules/ProtoCoin.ts --network local",
+    "deploy:sepolia": "npx hardhat ignition deploy ignition/modules/ProtoCoin.ts --network sepolia"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "hardhat": "^2.24.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.3.0",
+    "dotenv": "^16.5.0"
+  }
+}
