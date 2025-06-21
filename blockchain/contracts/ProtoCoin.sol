@@ -13,16 +13,16 @@ contract ProtoCoin is ERC20 {
 
     constructor() ERC20("ProtoCoin","PTC") {
         _owner = msg.sender;
-        _mint(msg.sender, 1_000_000 * 10 ** 18);
+        _mint(msg.sender, 10_000_000 * 10 ** 18);
     }
 
-    function mint() public {
+    function mint(address to) public onlyOwner() {
         require(_mintAmount > 0, "Minting nao habilitado.");
-        require(block.timestamp > _nextMint[msg.sender], "Voce nao pode realizar o mint 2x em um dia.");
+        require(block.timestamp > _nextMint[to], "Voce nao pode realizar o mint 2x em um dia.");
 
-        _mint(msg.sender, _mintAmount);
+        _mint(to, _mintAmount);
 
-        _nextMint[msg.sender] = block.timestamp + _mintDelay;
+        _nextMint[to] = block.timestamp + _mintDelay;
     }
 
     function setMintAmount(uint mintAmount) public onlyOwner{

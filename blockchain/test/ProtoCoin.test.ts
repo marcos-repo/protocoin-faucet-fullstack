@@ -43,7 +43,7 @@ describe("ProtoCoin Tests", function () {
 
       const totalSupply = await protocoin.totalSupply();
       const decimals = await protocoin.decimals();
-      expect(totalSupply).eq(1_000_000n * 10n ** decimals);
+      expect(totalSupply).eq(10_000_000n * 10n ** decimals);
     });
 
   it("Should get balance", async function () {
@@ -51,12 +51,12 @@ describe("ProtoCoin Tests", function () {
 
       const balanceOf = await protocoin.balanceOf(owner);
       const decimals = await protocoin.decimals();
-      expect(balanceOf).eq(1_000_000n * 10n ** decimals);
+      expect(balanceOf).eq(10_000_000n * 10n ** decimals);
     });
 
   it("Should transfer", async function () {
       const { protocoin, owner, otherAccount } = await loadFixture(deployFixture);
-      const value = 1_000_000n;
+      const value = 10_000_000n;
 
       const totalSupply = await protocoin.totalSupply();
       await protocoin.transfer(otherAccount.address, value);
@@ -91,9 +91,9 @@ describe("ProtoCoin Tests", function () {
 
     it("Should transfer from", async function () {
       const { protocoin, owner, otherAccount } = await loadFixture(deployFixture);
-      const value = 1_000_000n;
+      const value = 10_000_000n;
 
-      await protocoin.approve(otherAccount.address, 1_000_000);
+      await protocoin.approve(otherAccount.address, 10_000_000);
 
       const instance = protocoin.connect(otherAccount);
       await instance.transferFrom(owner.address, otherAccount.address, value);
@@ -107,7 +107,7 @@ describe("ProtoCoin Tests", function () {
 
     it("Should NOT transfer from", async function () {
       const { protocoin, owner, otherAccount } = await loadFixture(deployFixture);
-      const value = 1_000_000n;
+      const value = 10_000_000n;
       
       const instance = protocoin.connect(otherAccount);
 
@@ -119,7 +119,7 @@ describe("ProtoCoin Tests", function () {
 
     it("Should NOT transfer - from balance", async function () {
       const { protocoin, owner, otherAccount } = await loadFixture(deployFixture);
-      const value = 1_000_000n;
+      const value = 10_000_000n;
       
       const instance = protocoin.connect(otherAccount);
 
@@ -131,7 +131,7 @@ describe("ProtoCoin Tests", function () {
 
     it("Should NOT transfer from", async function () {
       const { protocoin, owner, otherAccount } = await loadFixture(deployFixture);
-      const value = 1_000_000n;
+      const value = 10_000_000n;
       
       const instance = protocoin.connect(otherAccount);
 
@@ -143,7 +143,7 @@ describe("ProtoCoin Tests", function () {
 
     it("Should NOT transfer from - no allowance limit", async function () {
       const { protocoin, owner, otherAccount } = await loadFixture(deployFixture);
-      const value = 1_000_000n;
+      const value = 10_000_000n;
 
       await protocoin.approve(otherAccount.address, 1_000_000);
       const instance = protocoin.connect(otherAccount);
@@ -161,8 +161,7 @@ describe("ProtoCoin Tests", function () {
       await protocoin.setMintAmount(mintAmount);
 
       const balanceBefore = await protocoin.balanceOf(otherAccount.address);
-      const instance = protocoin.connect(otherAccount);
-      await instance.mint();
+      await protocoin.mint(otherAccount.address);
       const balanceAfter = await protocoin.balanceOf(otherAccount.address);
 
       expect(balanceAfter).eq(balanceBefore + mintAmount);
@@ -176,12 +175,12 @@ describe("ProtoCoin Tests", function () {
 
       
       const balanceOwnerBefore = await protocoin.balanceOf(owner.address);
-      await protocoin.mint();
+      await protocoin.mint(owner.address);
       const balanceOwnerAfter = await protocoin.balanceOf(owner.address);
 
       const balanceOtherAccountBefore = await protocoin.balanceOf(otherAccount.address);
-      const instance = protocoin.connect(otherAccount);
-      await instance.mint();
+
+      await protocoin.mint(otherAccount.address);
       const balanceOtherAccountAfter = await protocoin.balanceOf(otherAccount.address);
 
       expect(balanceOwnerAfter).eq(balanceOwnerBefore + mintAmount);
@@ -196,12 +195,12 @@ describe("ProtoCoin Tests", function () {
       await protocoin.setMintAmount(mintAmount);
 
       const balanceOtherAccountBefore = await protocoin.balanceOf(otherAccount.address);
-      const instance = protocoin.connect(otherAccount);
-      await instance.mint();
+
+      await protocoin.mint(otherAccount.address);
 
       await time.increase(mintDelay * 2);
 
-      await instance.mint();
+      await protocoin.mint(otherAccount.address);
       const balanceOtherAccountAfter = await protocoin.balanceOf(otherAccount.address);
 
       expect(balanceOtherAccountAfter).eq(balanceOtherAccountBefore + (mintAmount * 2n));
@@ -210,9 +209,7 @@ describe("ProtoCoin Tests", function () {
     it("Should NOT mint", async function () {
       const { protocoin, owner, otherAccount } = await loadFixture(deployFixture);
 
-      const instance = protocoin.connect(otherAccount);      
-
-      await expect(instance.mint())
+      await expect(protocoin.mint(owner.address))
             .to
             .be
             .revertedWith("Minting nao habilitado.");
@@ -245,18 +242,13 @@ describe("ProtoCoin Tests", function () {
     it("Should NOT mint twice", async function () {
       const { protocoin, owner, otherAccount } = await loadFixture(deployFixture);
 
-      const mintDelay = 60 * 60 * 24;
       const mintAmount = 1000n;
       await protocoin.setMintAmount(mintAmount);
 
-      const balanceOtherAccountBefore = await protocoin.balanceOf(otherAccount.address);
-      const instance = protocoin.connect(otherAccount);
-      await instance.mint();
-      await expect(instance.mint())
+      await protocoin.mint(otherAccount.address);
+      await expect(protocoin.mint(otherAccount.address))
             .to
             .be
             .revertedWith("Voce nao pode realizar o mint 2x em um dia.");
     });
 });
-
-//FAZER O DEPLOY ANTES DO COMMIT
