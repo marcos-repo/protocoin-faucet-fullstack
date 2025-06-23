@@ -15,7 +15,7 @@ function App() {
 
     mint()
     .then((tx) => setMessage("Tokens enviados. Tx: " + tx))
-    .catch((err) => setMessage(err.message))
+    .catch((error) => setMessage(error.respomse ? error.response.data : error.message))
 }
 
   return (
@@ -40,7 +40,7 @@ function App() {
         <main className="px-3">
           <h1>Obtenha ProtoCoins!</h1>
           <p className="lead">
-            Uma vez por dia, ganhe 1.000 PTCs grátis, conectando sua Metamask abaixo:
+            Uma vez por dia, ganhe 10.000 PTCs grátis, conectando sua Metamask abaixo:
           </p>
           <p className="lead">
             <a
@@ -48,7 +48,7 @@ function App() {
               onClick={connectMetamask}
               className="btn btn-lg btn-light fw-bold border-white bg-white">
                 <img src="/assets/images/metamask.svg" width="48" alt="Metamask Logo" />
-                Conectar Metamask
+                Receber meus Tokens!
             </a>
           </p>
           <p className='lead'>

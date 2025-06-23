@@ -1,7 +1,8 @@
  import Web3 from 'web3';
- import ProtoCoinABI from './contracts/abi/protocoin-abi.json';
 
-const VITE_PROTOCOIN_ADDRESS = `${import.meta.env.VITE_PROTOCOIN_ADDRESS}`;
+ import axios from 'axios';
+
+ const API_URL = `${import.meta.env.VITE_API_URL}`;
 
  export async function mint() {
     if(!window.ethereum)
@@ -12,15 +13,7 @@ const VITE_PROTOCOIN_ADDRESS = `${import.meta.env.VITE_PROTOCOIN_ADDRESS}`;
 
     if(!accounts || !accounts.length) throw new Error('Nenhuma conta autorizada!');
 
-    const contract = new web3.eth.Contract(
-                        ProtoCoinABI, 
-                        VITE_PROTOCOIN_ADDRESS, 
-                        {from: accounts[0]}
-                    );
+    const response = await axios.post(`${API_URL}/mint/${accounts[0]}`);
+    return response.data;
 
-    const tx = await contract.methods.mint().send();
-
-    console.log(tx.transactionHash);
-
-    return tx.transactionHash;
  }
