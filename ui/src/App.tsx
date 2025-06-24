@@ -12,7 +12,7 @@ function App() {
       setMessage("Solicitando seus tokens. Por favor, aguarde.");
 
       mint()
-        .then((tx) => setMessage("Tokens enviados. Tx: " + tx))
+        .then((tx) => setMessage(`Tokens enviados para ${localStorage.getItem("wallet")}. Tx: ${tx}`))
         .catch((error) =>
           setMessage(error.response ? error.response.data : error.message)
         );
