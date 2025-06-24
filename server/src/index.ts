@@ -24,8 +24,8 @@ app.post('/mint/:wallet', async (req: Request, res: Response, next: NextFunction
         res.json(tx);
     } 
     catch (error: any) {
-        console.log(error);
-        res.status(500).json(error.message);
+        console.error(error);
+        res.status(500).json(error.cause?.errorArgs?.message || error.message);
     }
 });
 
